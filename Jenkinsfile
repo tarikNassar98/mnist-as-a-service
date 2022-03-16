@@ -8,7 +8,7 @@ pipeline {
 
   stages {
         stage('MNIST Predictor - build'){
-            when { branch "dev1" }
+            when { branch "dev" }
             steps {
                 sh '''
                 IMAGE="mnist-predictor:0.0.${BUILD_NUMBER}"

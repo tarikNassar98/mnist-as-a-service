@@ -8,7 +8,7 @@ pipeline {
 
   stages {
         stage('MNIST Predictor - build'){
-            when { branch "dev" }
+            when { branch "dev1" }
             steps {
                 sh '''
                 IMAGE="mnist-predictor:0.0.${BUILD_NUMBER}"
@@ -34,6 +34,7 @@ pipeline {
                 sh '''
                 cd infra/k8s
                 sed -i 's/{{IMG_URL}}/${REGISTRY_URL}/g' mnist-predictor.yaml
+                sed -i 's/{{IMG_TAG}}/0.0.5/g' mnist-predictor.yaml
                 kubectl apply -f mnist-predictor.yaml
                 '''
             }

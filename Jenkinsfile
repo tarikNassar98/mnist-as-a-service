@@ -29,7 +29,7 @@ pipeline {
         }
 
         stage('MNIST Predictor - deploy'){
-            when { branch "master" }
+            when { branch "dev" }
             steps {
                 sh '''
                 cd infra/k8s

@@ -1,58 +1,41 @@
 pipeline {
   agent any
 
+  environment {
+    REGISTRY_URL = ''
+    REGION = 'us-east-1'
+  }
+
   stages {
-        stage('Load Artifact - dev') {
-            when { anyOf {branch "dev"} }
-            steps {
-                copyArtifacts filter: 'infra/dev/terraform.tfstate', projectName: '${JOB_NAME}'
-            }
-        }
-
-        stage('Load Artifact - prod') {
-            when { anyOf {branch "master"} }
-            steps {
-                copyArtifacts filter: 'infra/prod/terraform.tfstate', projectName: '${JOB_NAME}'
-            }
-        }
-
-        stage('Terraform Init & Plan'){
-            when { anyOf {branch "master";branch "dev";changeRequest()} }
+        stage('MNIST Predictor - build'){
+            when { branch "master" }
             steps {
                 sh '''
-                if [ "$BRANCH_NAME" = "master" ] || [ "$CHANGE_TARGET" = "master" ]; then
-                    cd infra/prod
-                else
-                    cd infra/dev
-                fi
-                terraform init
-                terraform plan
+                IMAGE="mnist-predictor:0.0.${BUILD_NUMBER}"
+                cd ml_model
+                aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin ${REGISTRY_URL}
+                docker build -t ${IMAGE} .
+                docker tag ${IMAGE} ${REGISTRY_URL}/${IMAGE}
+                docker push ${REGISTRY_URL}/${IMAGE}
                 '''
             }
         }
 
-        stage('Terraform Apply - dev'){
-            when { anyOf {branch "dev"} }
+        stage('MNIST Web Server - build'){
+            when { branch "master" }
             steps {
-                sh '''
-                cd infra/dev
-                terraform apply -auto-approve
-                '''
-                archiveArtifacts artifacts: 'infra/dev/terraform.tfstate', onlyIfSuccessful: true
+                sh '''ls'''
             }
         }
 
-        stage('Terraform Apply - prod'){
-            when { anyOf {branch "master"}; }
-            input {
-                message "Do you want to proceed for infrastructure provisioning?"
-            }
+        stage('MNIST Predictor - deploy'){
+            when { branch "master" }
             steps {
                 sh '''
-                cd infra/prod
-                terraform apply -auto-approve
+                cd infra/k8s
+                sed -i 's/{{IMG_URL}}/${REGISTRY_URL}/g' mnist-predictor.yaml
+                kubectl apply -f mnist-predictor.yaml
                 '''
-                archiveArtifacts artifacts: 'infra/prod/terraform.tfstate', onlyIfSuccessful: true
             }
         }
   }

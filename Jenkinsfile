@@ -33,9 +33,8 @@ pipeline {
             steps {
                 sh '''
                 cd infra/k8s
-                URL=$REGISTRY_URL
-                sed -i 's/{{IMG_URL}}/$URL/g' mnist-predictor.yaml
-                sed -i 's/{{IMG_TAG}}/0.0.5/g' mnist-predictor.yaml
+                sed -i "s/{{IMG_URL}}/$REGISTRY_URL/g" mnist-predictor.yaml
+                sed -i "s/{{IMG_TAG}}/0.0.5/g" mnist-predictor.yaml
                 aws eks --region eu-north-1 update-kubeconfig --name devops-apr21-k8s
                 kubectl apply -f mnist-predictor.yaml
                 '''

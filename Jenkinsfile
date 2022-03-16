@@ -2,8 +2,8 @@ pipeline {
   agent any
 
   environment {
-    REGISTRY_URL = ''
-    REGION = 'us-east-1'
+    REGISTRY_URL = '352708296901.dkr.ecr.eu-west-2.amazonaws.com'
+    REGION = 'eu-west-2'
   }
 
   stages {

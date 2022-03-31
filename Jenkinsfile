@@ -5,6 +5,8 @@ pipeline {
     REGISTRY_URL = ''
     ECR_REGION = ''
     K8S_NAMESPACE = ''
+    K8S_CLUSTER_NAME = ''
+    K8S_CLUSTER_REGION = ''
   }
 
   stages {
@@ -54,7 +56,7 @@ pipeline {
             sed -i "s/{{IMG_NAME}}/$IMG_NAME/g" mnist-predictor.yaml
 
             # get kubeconfig creds
-            aws eks --region eu-north-1 update-kubeconfig --name devops-apr21-k8s
+            aws eks --region $K8S_CLUSTER_REGION update-kubeconfig --name $K8S_CLUSTER_NAME
 
             # apply to your namespace
             kubectl apply -f mnist-predictor.yaml -n $K8S_NAMESPACE

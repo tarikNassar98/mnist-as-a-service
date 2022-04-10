@@ -1,5 +1,5 @@
 pipeline {
-  agent any
+  agent label={ label 'ec2-fleet' }
 
   environment {
     REGISTRY_URL = ''

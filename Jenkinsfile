@@ -13,7 +13,7 @@ pipeline {
       steps {
           sh '''
           echo building ...
-          echo ${hostname}
+          echo hostname $HOSTNAME
 
           '''
       }

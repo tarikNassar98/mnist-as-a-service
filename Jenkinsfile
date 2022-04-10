@@ -12,7 +12,7 @@ pipeline {
       when { branch "master" }
       steps {
           sh '''
-          echo building
+          echo building ...
 
           '''
       }

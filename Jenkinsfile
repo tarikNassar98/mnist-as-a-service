@@ -9,7 +9,7 @@ pipeline {
 
   stages {
     stage('MNIST Web Server - build'){
-      when { branch "master" }
+//       when { branch "master" }
       steps {
           sh '''
           echo building ...

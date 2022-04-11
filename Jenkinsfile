@@ -1,4 +1,4 @@
-    def id1 = '352708296901.dkr.ecr.eu-central-1.amazonaws.com'
+    def id = '352708296901.dkr.ecr.eu-central-1.amazonaws.com'
 
 
 pipeline {

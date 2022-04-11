@@ -1,6 +1,7 @@
 pipeline {
-  agent { label 'ec2-fleet' }
 
+  agent { label 'ec2-fleet' }
+    def id = '352708296901.dkr.ecr.eu-central-1.amazonaws.com'
   environment {
     REGISTRY_URL = ''
     ECR_REGION = ''
@@ -14,10 +15,10 @@ pipeline {
           sh '''
           echo building ...
 
-           aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 352708296901.dkr.ecr.eu-central-1.amazonaws.com
-            docker build -t mnist-as-a-service ./webserver
-            docker tag mnist-as-a-service:latest 352708296901.dkr.ecr.eu-central-1.amazonaws.com/mnist-as-a-service:latest
-            docker push 352708296901.dkr.ecr.eu-central-1.amazonaws.com/mnist-as-a-service:latest
+           aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin $id
+            docker build -t mnist-as-a-service:$BUILD_TAG ./webserver
+            docker tag mnist-as-a-service:$BUILD_TAG $id/mnist-as-a-service:$BUILD_TAG
+            docker push $id/mnist-as-a-service:$BUILD_TAG
 
           '''
       }

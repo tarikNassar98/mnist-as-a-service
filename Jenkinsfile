@@ -12,7 +12,7 @@ pipeline {
 //       when { branch "master" }
       steps {
           sh '''
-          echo building ...
+          echo building ....
            aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 352708296901.dkr.ecr.eu-central-1.amazonaws.com
 //            docker build -t mnist-as-a-service .
 //             docker tag mnist-as-a-service:latest 352708296901.dkr.ecr.eu-central-1.amazonaws.com/mnist-as-a-service:latest

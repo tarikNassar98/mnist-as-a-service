@@ -1,7 +1,9 @@
+    def id1 = '352708296901.dkr.ecr.eu-central-1.amazonaws.com'
+
+
 pipeline {
 
   agent { label 'ec2-fleet' }
-    def id = '352708296901.dkr.ecr.eu-central-1.amazonaws.com'
   environment {
     REGISTRY_URL = ''
     ECR_REGION = ''

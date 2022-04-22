@@ -20,18 +20,9 @@ pipeline {
           id=public.ecr.aws/r7m7o9d4
 
           echo building ...
-        sudo yum update
 
-
-        sudo  yum install --upgrade --user awscli
-        sudo yum update
-        sudo yum install docker
-        sudo systemctl enable docker.service
-        sudo systemctl start docker.service
          aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin $id
-         docker build -t mnist-as-a-service:$BUILD_TAG ./webserver
-         docker tag mnist-as-a-service:$BUILD_TAG $id/mnist-as-a-service:$BUILD_TAG
-         docker push $id/mnist-as-a-service:$BUILD_TAG
+
           '''
       }
     }

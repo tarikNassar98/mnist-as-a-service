@@ -23,7 +23,7 @@ pipeline {
         sudo yum update
 
 
-        sudo  pip3 install --upgrade --user awscli
+        sudo  yum install --upgrade --user awscli
         sudo yum update
         sudo yum install docker
         sudo systemctl enable docker.service

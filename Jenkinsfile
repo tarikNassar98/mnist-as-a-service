@@ -21,10 +21,9 @@ pipeline {
 
           echo building ...
         sudo yum update
-//         sudo yum install docker
-//         sudo systemctl enable docker.service
 
-        pip3 install --upgrade --user awscli
+
+        sudo  pip3 install --upgrade --user awscli
          aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin $id
          docker build -t mnist-as-a-service:$BUILD_TAG ./webserver
          docker tag mnist-as-a-service:$BUILD_TAG $id/mnist-as-a-service:$BUILD_TAG

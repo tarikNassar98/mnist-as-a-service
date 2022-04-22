@@ -20,9 +20,13 @@ pipeline {
           id=public.ecr.aws/r7m7o9d4
 
           echo building ...
-
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+        unzip awscliv2.zip
+        sudo ./aws/install
          aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin $id
-
+         docker build -t mnist-as-a-service:$BUILD_TAG ./webserver
+         docker tag mnist-as-a-service:$BUILD_TAG $id/mnist-as-a-service:$BUILD_TAG
+         docker push $id/mnist-as-a-service:$BUILD_TAG
           '''
       }
     }

@@ -21,7 +21,7 @@ pipeline {
 
          aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin $id
          docker build -t mnist-as-a-service:$BUILD_TAG ./webserver
-         docker tag tarik-fp-ecr:latest $id/mnist-as-a-service:$BUILD_TAG
+         docker tag mnist-as-a-service:$BUILD_TAG $id/tarik-fp-ecr:latest
          docker push $id/mnist-as-a-service:$BUILD_TAG
 
 

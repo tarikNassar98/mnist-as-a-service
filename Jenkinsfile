@@ -19,10 +19,16 @@ pipeline {
           sh '''
           id=public.ecr.aws/r7m7o9d4
 
-         aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin $id
-         docker build -t mnist-as-a-service:$BUILD_TAG ./webserver
-         docker tag tarik-fp-ecr:$BUILD_TAG $id/mnist-as-a-service:$BUILD_TAG
-         docker push $id/mnist-as-a-service:$BUILD_TAG
+//          aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin $id
+//          docker build -t mnist-as-a-service:$BUILD_TAG ./webserver
+//          docker tag tarik-fp-ecr:$BUILD_TAG $id/tarik-fp-ecr:$BUILD_TAG
+//          docker push $id/mnist-as-a-service:$BUILD_TAG
+
+          aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/r7m7o9d4
+          docker build -t tarik-fp-ecr ./webserver
+          docker tag tarik-fp-ecr:latest public.ecr.aws/r7m7o9d4/tarik-fp-ecr:latest
+          docker push public.ecr.aws/r7m7o9d4/tarik-fp-ecr:latest
+
           '''
       }
     }

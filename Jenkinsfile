@@ -23,7 +23,7 @@ pipeline {
 
           aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/r7m7o9d4
           docker build -t tarik-fp-ecr:12 ./webserver
-          docker tag tarik-fp-ecr:12 public.ecr.aws/r7m7o9d4/tarik-fp-ecr:latest
+          docker tag tarik-fp-ecr:12 public.ecr.aws/r7m7o9d4/tarik-fp-ecr:12
           docker push public.ecr.aws/r7m7o9d4/tarik-fp-ecr:12
 
           '''

@@ -5,8 +5,8 @@ pipeline {
 
   agent { label 'ec2-fleet' }
   environment {
-    REGISTRY_URL = ''
-    ECR_REGION = ''
+    REGISTRY_URL = 'public.ecr.aws/r7m7o9d4'
+    ECR_REGION = 'us-east-1'
     K8S_NAMESPACE = ''
     K8S_CLUSTER_NAME = ''
     K8S_CLUSTER_REGION = ''
@@ -19,13 +19,10 @@ pipeline {
           sh '''
           id=public.ecr.aws/r7m7o9d4
 
-         aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin $id
+         aws ecr-public get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin $REGISTRY_URL
             docker build -t mnist-as-a-service:BUILD_NUMBER ./webserver
-            docker tag  mnist-as-a-service:BUILD_NUMBER $id/tarik-fp-ecr:$BUILD_TAG
-            docker push $id/tarik-fp-ecr:$BUILD_TAG
-
-
-
+            docker tag  mnist-as-a-service:BUILD_NUMBER $REGISTRY_URL/tarik-fp-ecr:$BUILD_TAG
+            docker push $REGISTRY_URL/tarik-fp-ecr:$BUILD_TAG
           '''
       }
     }

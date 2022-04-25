@@ -17,7 +17,6 @@ pipeline {
 //       when { branch "master" }
       steps {
           sh '''
-          id=public.ecr.aws/r7m7o9d4
 
          aws ecr-public get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin $REGISTRY_URL
             docker build -t mnist-as-a-service:BUILD_NUMBER ./webserver

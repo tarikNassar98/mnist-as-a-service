@@ -42,7 +42,7 @@ pipeline {
             sh '''
             IMAGE="mnist-predictor:0.0.${BUILD_NUMBER}"
             cd ml_model
-            docker build -t ${IMAGE} .
+            docker build -t $IMAGE .
             docker tag ${IMAGE} ${REGISTRY_URL}:$BUILD_TAG
             docker push ${REGISTRY_URL}:$BUILD_TAG
             '''

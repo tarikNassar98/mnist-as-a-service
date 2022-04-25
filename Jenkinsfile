@@ -17,11 +17,12 @@ pipeline {
 //       when { branch "master" }
       steps {
           sh '''
-
-            aws ecr-public get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin $REGISTRY_URL
-            docker build -t mnist-web-server:$BUILD_NUMBER ./webserver
-            docker tag  mnist-web-server:$BUILD_NUMBER $REGISTRY_URL:mnist-web-server-$BRANCH_NAME-$BUILD_NUMBER
-            docker push $REGISTRY_URL:mnist-web-server-$BRANCH_NAME-$BUILD_NUMBER
+            IMAGE="mnist-web-server:${BUILD_NUMBER}"
+            TAG="mnist-predictor-${BRANCH_NAME}-${BUILD_NUMBER}"
+            aws ecr-public get-login-password --region ${ECR_REGION} | docker login --username AWS --password-stdin ${REGISTRY_URL}
+            docker build -t ${IMAGE} ./webserver
+            docker tag  ${IMAGE} ${REGISTRY_URL}:${TAG}
+            docker push ${REGISTRY_URL}:${TAG}
           '''
       }
     }
@@ -40,11 +41,12 @@ pipeline {
 //         when { branch "master" }
         steps {
             sh '''
-            IMAGE="mnist-predictor:$BUILD_NUMBER"
+            IMAGE="mnist-predictor:${BUILD_NUMBER}"
+            TAG="mnist-predictor-${BRANCH_NAME}-${BUILD_NUMBER}"
             cd ml_model
-            docker build -t $IMAGE  .
-            docker tag mnist-predictor:$BUILD_NUMBER ${REGISTRY_URL}:mnist-predictor-$BRANCH_NAME-$BUILD_NUMBER
-            docker push ${REGISTRY_URL}:mnist-predictor-$BRANCH_NAME-$BUILD_NUMBER
+            docker build -t ${IMAGE}  .
+            docker tag ${IMAGE} ${REGISTRY_URL}:${TAG}
+            docker push ${REGISTRY_URL}:${TAG}
             '''
         }
     }

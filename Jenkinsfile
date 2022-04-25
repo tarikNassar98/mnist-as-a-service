@@ -30,7 +30,7 @@ pipeline {
         when { branch "master" }
         steps {
             sh '''
-            echo deploying .....
+            echo deploying ....
             '''
         }
     }

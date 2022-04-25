@@ -18,7 +18,7 @@ pipeline {
       steps {
           sh '''
 
-         aws ecr-public get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin $REGISTRY_URL
+            aws ecr-public get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin $REGISTRY_URL
             docker build -t mnist-as-a-service:BUILD_NUMBER ./webserver
             docker tag  mnist-as-a-service:BUILD_NUMBER $REGISTRY_URL:$BUILD_TAG
             docker push $REGISTRY_URL:$BUILD_TAG
@@ -42,8 +42,9 @@ pipeline {
             sh '''
             IMAGE="mnist-predictor:0.0.${BUILD_NUMBER}"
             cd ml_model
+            aws ecr-public get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin $REGISTRY_URL
             docker build -t ${IMAGE} .
-            docker tag ${IMAGE} $REGISTRY_URL/${IMAGE}
+            docker tag ${IMAGE} ${REGISTRY_URL}/${IMAGE}
             docker push ${REGISTRY_URL}/${IMAGE}
             '''
         }

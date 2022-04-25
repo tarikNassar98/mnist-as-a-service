@@ -18,6 +18,10 @@ pipeline {
       steps {
           sh '''
 
+            aws ecr-public get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin $REGISTRY_URL
+            docker build -t mnist-as-a-service:$BUILD_NUMBER ./webserver
+            docker tag  mnist-as-a-service:$BUILD_NUMBER $REGISTRY_URL:$BUILD_TAG
+            docker push $REGISTRY_URL:$BUILD_TAG
           '''
       }
     }
@@ -36,10 +40,9 @@ pipeline {
 //         when { branch "master" }
         steps {
             sh '''
-            aws ecr-public get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin $REGISTRY_URL
             IMAGE="mnist-predictor:$BUILD_NUMBER"
             cd ml_model
-            docker build -t mnist-predictor:$BUILD_NUMBER  .
+            docker build -t $IMAGE  .
             docker tag mnist-predictor:$BUILD_NUMBER ${REGISTRY_URL}:mnist-predictor-$BRANCH_NAME-$BUILD_NUMBER
             docker push ${REGISTRY_URL}:mnist-predictor-$BRANCH_NAME-$BUILD_NUMBER
             '''

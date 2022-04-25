@@ -5,7 +5,7 @@ pipeline {
 
   agent { label 'ec2-fleet' }
   environment {
-    REGISTRY_URL = 'public.ecr.aws/r7m7o9d4'
+    REGISTRY_URL = 'public.ecr.aws/r7m7o9d4/tarik-fp-ecr'
     ECR_REGION = 'us-east-1'
     K8S_NAMESPACE = ''
     K8S_CLUSTER_NAME = ''
@@ -44,7 +44,7 @@ pipeline {
             IMAGE="mnist-predictor:0.0.${BUILD_NUMBER}"
             cd ml_model
             docker build -t ${IMAGE} .
-            docker tag ${IMAGE} ${REGISTRY_URL}/${IMAGE}
+            docker tag ${IMAGE} $REGISTRY_URL/${IMAGE}
             docker push ${REGISTRY_URL}/${IMAGE}
             '''
         }

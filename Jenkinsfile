@@ -20,7 +20,7 @@ pipeline {
 
             aws ecr-public get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin $REGISTRY_URL
             docker build -t mnist-web-server:$BUILD_NUMBER ./webserver
-            docker tag  mnist-web-server:$BUILD_NUMBER $REGISTRY_URL:mnist-Web-server-$BRANCH_NAME-$BUILD_NUMBER
+            docker tag  mnist-web-server:$BUILD_NUMBER $REGISTRY_URL:mnist-web-server-$BRANCH_NAME-$BUILD_NUMBER
             docker push $REGISTRY_URL:mnist-web-server-$BRANCH_NAME-$BUILD_NUMBER
           '''
       }

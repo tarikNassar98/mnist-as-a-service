@@ -16,7 +16,9 @@ pipeline {
     stage('MNIST Web Server - build'){
 //       when { branch "master" }
       steps {
+          sh '''
 
+          '''
       }
     }
 

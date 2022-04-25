@@ -18,7 +18,7 @@ pipeline {
       steps {
           sh '''
             IMAGE="mnist-web-server:${BUILD_NUMBER}"
-            TAG="mnist-predictor-${BRANCH_NAME}-${BUILD_NUMBER}"
+            TAG="mnist-web-server-${BRANCH_NAME}-${BUILD_NUMBER}"
             aws ecr-public get-login-password --region ${ECR_REGION} | docker login --username AWS --password-stdin ${REGISTRY_URL}
             docker build -t ${IMAGE} ./webserver
             docker tag  ${IMAGE} ${REGISTRY_URL}:${TAG}

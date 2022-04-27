@@ -34,7 +34,7 @@ pipeline {
             echo deploying ....
 
             cd infra/k8s
-            IMG_NAME="mnist-web-server"
+            IMG_NAME="mnist-web-server-${BRANCH_NAME}-${BUILD_NUMBER}"
 
             # replace registry url and image name placeholders in yaml
             sed -i "s|{{REGISTRY_URL}}|$REGISTRY_URL|g" mnist-web-server.yaml

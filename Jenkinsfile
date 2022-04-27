@@ -37,9 +37,9 @@ pipeline {
             IMG_NAME=mnist-web-server:${BUILD_NUMBER}
 
             # replace registry url and image name placeholders in yaml
-            sed -i "s/{{REGISTRY_URL}}/$REGISTRY_URL/g" mnist-web-server.yaml
-            sed -i "s/{{K8S_NAMESPACE}}/$K8S_NAMESPACE/g" mnist-web-server.yaml
-            sed -i "s/{{IMG_NAME}}/$IMG_NAME/g" mnist-web-server.yaml
+           sudo sed -i "s/{{REGISTRY_URL}}/$REGISTRY_URL/g" mnist-web-server.yaml
+            sudo sed -i "s/{{K8S_NAMESPACE}}/$K8S_NAMESPACE/g" mnist-web-server.yaml
+            sudo sed -i "s/{{IMG_NAME}}/$IMG_NAME/g" mnist-web-server.yaml
 
             # get kubeconfig creds
             aws eks --region $K8S_CLUSTER_REGION update-kubeconfig --name $K8S_CLUSTER_NAME
@@ -73,9 +73,9 @@ pipeline {
             IMG_NAME=mnist-predictor:0.0.${BUILD_NUMBER}
 
             # replace registry url and image name placeholders in yaml
-            sed -i "s/{{REGISTRY_URL}}/$REGISTRY_URL/g" mnist-predictor.yaml
-            sed -i "s/{{K8S_NAMESPACE}}/$K8S_NAMESPACE/g" mnist-predictor.yaml
-            sed -i "s/{{IMG_NAME}}/$IMG_NAME/g" mnist-predictor.yaml
+           sudo sed -i "s/{{REGISTRY_URL}}/$REGISTRY_URL/g" mnist-predictor.yaml
+            sudo sed -i "s/{{K8S_NAMESPACE}}/$K8S_NAMESPACE/g" mnist-predictor.yaml
+            sudo sed -i "s/{{IMG_NAME}}/$IMG_NAME/g" mnist-predictor.yaml
 
             # get kubeconfig creds
             aws eks --region $K8S_CLUSTER_REGION update-kubeconfig --name $K8S_CLUSTER_NAME

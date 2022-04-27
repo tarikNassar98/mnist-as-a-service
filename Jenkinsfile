@@ -36,16 +36,6 @@ pipeline {
             cd infra/k8s
             IMG_NAME=mnist-web-server:${BUILD_NUMBER}
 
-//             # replace registry url and image name placeholders in yaml
-//             sed -i "s/{{REGISTRY_URL}}/$REGISTRY_URL/g" mnist-web-server.yaml
-//              sed -i "s/{{K8S_NAMESPACE}}/$K8S_NAMESPACE/g" mnist-web-server.yaml
-//              sed -i "s/{{IMG_NAME}}/$IMG_NAME/g" mnist-web-server.yaml
-//
-//             # get kubeconfig creds
-//             aws eks --region $K8S_CLUSTER_REGION update-kubeconfig --name $K8S_CLUSTER_NAME
-//
-//             # apply to your namespace
-//             kubectl apply -f mnist-web-server.yaml -n $K8S_NAMESPACE
             '''
         }
     }

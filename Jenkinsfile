@@ -26,66 +26,66 @@ pipeline {
           '''
       }
     }
-//
-//     stage('MNIST Web Server - deploy'){
-//         //when { branch "master" }
-//         steps {
-//             sh '''
-//             echo deploying ....
-//
-//             cd infra/k8s
-//             IMG_NAME="mnist-web-server-${BRANCH_NAME}-${BUILD_NUMBER}"
-//
-//             # replace registry url and image name placeholders in yaml
-//             sed -i "s|{{REGISTRY_URL}}|$REGISTRY_URL|g" mnist-web-server.yaml
-//             sed -i "s|{{K8S_NAMESPACE}}|$K8S_NAMESPACE|g" mnist-web-server.yaml
-//             sed -i "s|{{IMG_NAME}}|$IMG_NAME|g" mnist-web-server.yaml
-//
-//             # get kubeconfig creds
-//             aws eks --region $K8S_CLUSTER_REGION update-kubeconfig --name $K8S_CLUSTER_NAME
-//
-//             # apply to your namespace
-//             echo ${K8S_NAMESPACE}
-//             kubectl apply -f mnist-web-server.yaml --validate=false -n=${K8S_NAMESPACE}
-//             '''
-//         }
-//     }
-//
-//
-//     stage('MNIST Predictor - build'){
-// //         when { branch "master" }
-//         steps {
-//             sh '''
-//             IMAGE="mnist-predictor:${BUILD_NUMBER}"
-//             TAG="mnist-predictor-${BRANCH_NAME}-${BUILD_NUMBER}"
-//             cd ml_model
-//             docker build -t ${IMAGE}  .
-//             docker tag ${IMAGE} ${REGISTRY_URL}:${TAG}
-//             docker push ${REGISTRY_URL}:${TAG}
-//             '''
-//         }
-//     }
-//
-//     stage('MNIST Predictor - deploy'){
-//         //when { branch "master" }
-//         steps {
-//             sh '''
-//             cd infra/k8s
-//             IMG_NAME=mnist-predictor:0.0.${BUILD_NUMBER}
-//             sed --version
-//             # replace registry url and image name placeholders in yaml
-//              sed -i "s|{{REGISTRY_URL}}|$REGISTRY_URL|g" mnist-predictor.yaml
-//              sed -i "s|{{K8S_NAMESPACE}}|$K8S_NAMESPACE|g" mnist-predictor.yaml
-//              sed -i "s|{{IMG_NAME}}|$IMG_NAME|g" mnist-predictor.yaml
-//
-//             # get kubeconfig creds
-//             aws eks --region $K8S_CLUSTER_REGION update-kubeconfig --name $K8S_CLUSTER_NAME
-//
-//             # apply to your namespace
-//             kubectl apply -f mnist-predictor.yaml  --validate=false --namespace=$K8S_NAMESPACE
-//             '''
-//         }
-//     }
+
+    stage('MNIST Web Server - deploy'){
+        //when { branch "master" }
+        steps {
+            sh '''
+            echo deploying ....
+
+            cd infra/k8s
+            IMG_NAME="mnist-web-server-${BRANCH_NAME}-${BUILD_NUMBER}"
+
+            # replace registry url and image name placeholders in yaml
+            sed -i "s|{{REGISTRY_URL}}|$REGISTRY_URL|g" mnist-web-server.yaml
+            sed -i "s|{{K8S_NAMESPACE}}|$K8S_NAMESPACE|g" mnist-web-server.yaml
+            sed -i "s|{{IMG_NAME}}|$IMG_NAME|g" mnist-web-server.yaml
+
+            # get kubeconfig creds
+            aws eks --region $K8S_CLUSTER_REGION update-kubeconfig --name $K8S_CLUSTER_NAME
+
+            # apply to your namespace
+            echo ${K8S_NAMESPACE}
+            kubectl apply -f mnist-web-server.yaml --validate=false -n=${K8S_NAMESPACE}
+            '''
+        }
+    }
+
+
+    stage('MNIST Predictor - build'){
+//         when { branch "master" }
+        steps {
+            sh '''
+            IMAGE="mnist-predictor"
+            TAG="${image}-${BRANCH_NAME}-${BUILD_NUMBER}"
+            cd ml_model
+            docker build -t ${IMAGE}  .
+              docker tag  ${IMAGE} ${REGISTRY_URL}/tarik-fp-ecr:${TAG}
+            docker push public.ecr.aws/r7m7o9d4/tarik-fp-ecr:${TAG}
+            '''
+        }
+    }
+
+    stage('MNIST Predictor - deploy'){
+        //when { branch "master" }
+        steps {
+            sh '''
+            cd infra/k8s
+            IMG_NAME=mnist-predictor:0.0.${BUILD_NUMBER}
+            sed --version
+            # replace registry url and image name placeholders in yaml
+             sed -i "s|{{REGISTRY_URL}}|$REGISTRY_URL|g" mnist-predictor.yaml
+             sed -i "s|{{K8S_NAMESPACE}}|$K8S_NAMESPACE|g" mnist-predictor.yaml
+             sed -i "s|{{IMG_NAME}}|$IMG_NAME|g" mnist-predictor.yaml
+
+            # get kubeconfig creds
+            aws eks --region $K8S_CLUSTER_REGION update-kubeconfig --name $K8S_CLUSTER_NAME
+
+            # apply to your namespace
+            kubectl apply -f mnist-predictor.yaml  --validate=false --namespace=$K8S_NAMESPACE
+            '''
+        }
+    }
   }
 }
 

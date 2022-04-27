@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mnist-predictor
-  namespace: {{K8S_NAMESPACE}}
+  namespace: tarik-nassar
   labels:
     app: mnist-predictor
 spec:

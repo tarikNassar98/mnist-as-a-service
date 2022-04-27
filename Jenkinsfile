@@ -5,7 +5,7 @@ pipeline {
 
   agent { label 'ec2-fleet' }
   environment {
-    REGISTRY_URL = 'public.ecr.aws/r7m7o9d4'
+    REGISTRY_URL = 'public.ecr.aws/r7m7o9d4/tarik-fp-ecr'
     ECR_REGION = 'us-east-1'
     K8S_NAMESPACE = 'tarik-nassar'
     K8S_CLUSTER_NAME = 'devops-alfnar-k8s'
@@ -21,8 +21,8 @@ pipeline {
             TAG="${IMAGE}-${BRANCH_NAME}-${BUILD_NUMBER}"
             aws ecr-public get-login-password --region ${ECR_REGION} | docker login --username AWS --password-stdin ${REGISTRY_URL}
             docker build -t ${IMAGE} ./webserver
-            docker tag  ${IMAGE} ${REGISTRY_URL}/tarik-fp-ecr:${TAG}
-            docker push public.ecr.aws/r7m7o9d4/tarik-fp-ecr:${TAG}
+            docker tag  ${IMAGE} ${REGISTRY_URL}:${TAG}
+            docker push ${REGISTRY_URL}:${TAG}
           '''
       }
     }
@@ -60,8 +60,8 @@ pipeline {
             TAG="${image}-${BRANCH_NAME}-${BUILD_NUMBER}"
             cd ml_model
             docker build -t ${IMAGE}  .
-              docker tag  ${IMAGE} ${REGISTRY_URL}/tarik-fp-ecr:${TAG}
-            docker push public.ecr.aws/r7m7o9d4/tarik-fp-ecr:${TAG}
+            docker tag  ${IMAGE} ${REGISTRY_URL}:${TAG}
+            docker push ${REGISTRY_URL}:${TAG}
             '''
         }
     }

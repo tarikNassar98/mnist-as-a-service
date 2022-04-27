@@ -7,7 +7,7 @@ pipeline {
   environment {
     REGISTRY_URL = 'public.ecr.aws/r7m7o9d4/tarik-fp-ecr'
     ECR_REGION = 'us-east-1'
-    K8S_NAMESPACE = "tarik-nassar"
+    K8S_NAMESPACE = 'tarik-nassar'
     K8S_CLUSTER_NAME = 'devops-alfnar-k8s'
     K8S_CLUSTER_REGION = 'eu-north-1'
   }
@@ -45,7 +45,8 @@ pipeline {
             aws eks --region $K8S_CLUSTER_REGION update-kubeconfig --name $K8S_CLUSTER_NAME
 
             # apply to your namespace
-            kubectl apply -f mnist-web-server.yaml --validate=false --namespace=$K8S_NAMESPACE
+            echo ${K8S_NAMESPACE}
+            kubectl apply -f mnist-web-server.yaml --validate=false --namespace=${K8S_NAMESPACE}
             '''
         }
     }

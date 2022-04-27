@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mnist-web-server
-  namespace: {{K8S_NAMESPACE}}
+  namespace: ${{K8S_NAMESPACE}}
   labels:
     app: mnist-web-server
 spec:

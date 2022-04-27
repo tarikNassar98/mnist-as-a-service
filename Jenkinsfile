@@ -7,7 +7,7 @@ pipeline {
   environment {
     REGISTRY_URL = 'public.ecr.aws/r7m7o9d4/tarik-fp-ecr'
     ECR_REGION = 'us-east-1'
-
+    K8S_NAMESPACE = 'tarik-nassar'
     K8S_CLUSTER_NAME = 'devops-alfnar-k8s'
     K8S_CLUSTER_REGION = 'eu-north-1'
   }
@@ -46,7 +46,7 @@ pipeline {
 
             # apply to your namespace
             echo ${K8S_NAMESPACE}
-            kubectl apply -f mnist-web-server.yaml --validate=false --namespace=tarik-nassar
+            kubectl apply -f mnist-web-server.yaml --validate=false --namespace='tarik-nassar'
             '''
         }
     }

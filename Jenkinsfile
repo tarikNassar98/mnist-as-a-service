@@ -31,7 +31,7 @@ pipeline {
         //when { branch "master" }
         steps {
             sh '''
-            echo deploying ...
+            echo deploying ....
 
             cd infra/k8s
             IMG_NAME=mnist-web-server:${BUILD_NUMBER}
@@ -46,7 +46,7 @@ pipeline {
 
             # apply to your namespace
             echo ${K8S_NAMESPACE}
-            kubectl apply -f mnist-web-server.yaml --validate=false
+            kubectl apply -f mnist-web-server.yaml --validate=false --namespace=$K8S_NAMESPACE
             '''
         }
     }
@@ -82,7 +82,7 @@ pipeline {
             aws eks --region $K8S_CLUSTER_REGION update-kubeconfig --name $K8S_CLUSTER_NAME
 
             # apply to your namespace
-            kubectl apply -f mnist-predictor.yaml --namespace=$K8S_NAMESPACE --validate=false
+            kubectl apply -f mnist-predictor.yaml  --validate=false --namespace=$K8S_NAMESPACE
             '''
         }
     }

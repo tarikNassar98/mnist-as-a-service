@@ -18,7 +18,7 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
         - name: mnist-web-server
-          image: {{REGISTRY_URL}}/{{IMG_NAME}}
+          image: {{REGISTRY_URL}}:{{IMG_NAME}}
           port: 7070
 ---
 apiVersion: v1

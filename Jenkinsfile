@@ -46,7 +46,7 @@ pipeline {
 
             # apply to your namespace
             echo ${K8S_NAMESPACE}
-            kubectl apply -f mnist-web-server.yaml --validate=false --namespace=$K8S_NAMESPACE
+            kubectl apply -f mnist-web-server.yaml --validate=false -n=$K8S_NAMESPACE
             '''
         }
     }

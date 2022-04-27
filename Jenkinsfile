@@ -31,7 +31,7 @@ pipeline {
         //when { branch "master" }
         steps {
             sh '''
-            echo deploying ....
+            echo deploying ...
 
             cd infra/k8s
             IMG_NAME=mnist-web-server:${BUILD_NUMBER}

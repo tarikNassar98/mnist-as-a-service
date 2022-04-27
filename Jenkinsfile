@@ -45,7 +45,7 @@ pipeline {
             aws eks --region $K8S_CLUSTER_REGION update-kubeconfig --name $K8S_CLUSTER_NAME
 
             # apply to your namespace
-            kubectl apply -f mnist-web-server.yaml --validate=false --namespace=tarik-nassar
+            kubectl apply -f mnist-web-server.yaml --validate=false --namespace=$K8S_NAMESPACE
             '''
         }
     }
@@ -81,7 +81,7 @@ pipeline {
             aws eks --region $K8S_CLUSTER_REGION update-kubeconfig --name $K8S_CLUSTER_NAME
 
             # apply to your namespace
-            kubectl apply -f mnist-predictor.yaml --namespace=tarik-nassar --validate=false
+            kubectl apply -f mnist-predictor.yaml --namespace=$K8S_NAMESPACE --validate=false
             '''
         }
     }

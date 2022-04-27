@@ -37,7 +37,7 @@ pipeline {
             IMG_NAME=mnist-web-server:${BUILD_NUMBER}
 
             # replace registry url and image name placeholders in yaml
-            echo sed
+             sed
             sed -i "s/{{REGISTRY_URL}}/$REGISTRY_URL/g" mnist-web-server.yaml
             sed -i "s/{{K8S_NAMESPACE}}/$K8S_NAMESPACE/g" mnist-web-server.yaml
             sed -i "s/{{IMG_NAME}}/$IMG_NAME/g" mnist-web-server.yaml

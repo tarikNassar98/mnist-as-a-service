@@ -7,9 +7,9 @@ pipeline {
   environment {
     REGISTRY_URL = 'public.ecr.aws/r7m7o9d4/tarik-fp-ecr'
     ECR_REGION = 'us-east-1'
-    K8S_NAMESPACE = ''
-    K8S_CLUSTER_NAME = ''
-    K8S_CLUSTER_REGION = ''
+    K8S_NAMESPACE = 'tarik-nassar'
+    K8S_CLUSTER_NAME = 'devops-alfnar-k8s'
+    K8S_CLUSTER_REGION = 'eu-north-1'
   }
 
   stages {
@@ -32,6 +32,20 @@ pipeline {
         steps {
             sh '''
             echo deploying ...
+
+            cd infra/k8s
+            IMG_NAME=mnist-web-server:${BUILD_NUMBER}
+
+            # replace registry url and image name placeholders in yaml
+            sed -i "s/{{REGISTRY_URL}}/$REGISTRY_URL/g" mnist-web-server.yaml
+            sed -i "s/{{K8S_NAMESPACE}}/$K8S_NAMESPACE/g" mnist-web-server.yaml
+            sed -i "s/{{IMG_NAME}}/$IMG_NAME/g" mnist-web-server.yaml
+
+            # get kubeconfig creds
+            aws eks --region $K8S_CLUSTER_REGION update-kubeconfig --name $K8S_CLUSTER_NAME
+
+            # apply to your namespace
+            kubectl apply -f mnist-web-server.yaml -n $K8S_NAMESPACE
             '''
         }
     }
@@ -52,7 +66,7 @@ pipeline {
     }
 
     stage('MNIST Predictor - deploy'){
-        when { branch "master" }
+        //when { branch "master" }
         steps {
             sh '''
             cd infra/k8s

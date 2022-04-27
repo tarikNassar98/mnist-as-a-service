@@ -5,7 +5,7 @@ pipeline {
 
   agent { label 'ec2-fleet' }
   environment {
-    REGISTRY_URL = 'public.ecr.aws/r7m7o9d4/'
+    REGISTRY_URL = 'public.ecr.aws/r7m7o9d4'
     ECR_REGION = 'us-east-1'
     K8S_NAMESPACE = 'tarik-nassar'
     K8S_CLUSTER_NAME = 'devops-alfnar-k8s'

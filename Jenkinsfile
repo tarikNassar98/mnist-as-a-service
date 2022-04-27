@@ -57,7 +57,7 @@ pipeline {
         steps {
             sh '''
             IMAGE="mnist-predictor"
-            TAG="${image}-${BRANCH_NAME}-${BUILD_NUMBER}"
+            TAG="${IMAGE}-${BRANCH_NAME}-${BUILD_NUMBER}"
             cd ml_model
             aws ecr-public get-login-password --region ${ECR_REGION} | docker login --username AWS --password-stdin ${REGISTRY_URL}
             docker build -t ${IMAGE}  .

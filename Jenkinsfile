@@ -21,7 +21,7 @@ pipeline {
             TAG="${BRANCH_NAME}-${BUILD_NUMBER}"
             aws ecr-public get-login-password --region ${ECR_REGION} | docker login --username AWS --password-stdin ${REGISTRY_URL}
             docker build -t ${IMAGE} ./webserver
-            docker tag  ${IMAGE} ${REGISTRY_URL}/${IMAGE}:${TAG}
+            docker tag  tarik-fp ${REGISTRY_URL}/${IMAGE}
             docker push ${REGISTRY_URL}/tarik-fp
           '''
       }

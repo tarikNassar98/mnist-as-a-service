@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: minist-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  tls:
+    - hosts:
+        - anthonycornell.com
+      secretName: tls-secret
+  rules:
+    - host: aee31ccf257e84cf5a000d4437464ebc-aa075b9112394b19.elb.eu-north-1.amazonaws.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: mnist-web-server-service
+                port:
+                  number: 80

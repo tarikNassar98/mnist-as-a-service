@@ -19,7 +19,7 @@ spec:
       containers:
         - name: mnist-web-server
           image: {{REGISTRY_URL}}:{{IMG_NAME}}
-          port: 7070
+          port: 8081
 ---
 apiVersion: v1
 kind: Service

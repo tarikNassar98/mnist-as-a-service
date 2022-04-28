@@ -67,25 +67,25 @@ pipeline {
         }
     }
 
-//     stage('MNIST Predictor - deploy'){
-//         //when { branch "master" }
-//         steps {
-//             sh '''
-//             cd infra/k8s
-//             IMG_NAME="mnist-predictor-${BRANCH_NAME}-${BUILD_NUMBER}"
-//             # replace registry url and image name placeholders in yaml
-//              sed -i "s|{{REGISTRY_URL}}|$REGISTRY_URL|g" mnist-predictor.yaml
-//              sed -i "s|{{K8S_NAMESPACE}}|$K8S_NAMESPACE|g" mnist-predictor.yaml
-//              sed -i "s|{{IMG_NAME}}|$IMG_NAME|g" mnist-predictor.yaml
-//
-//             # get kubeconfig creds
-//             aws eks --region $K8S_CLUSTER_REGION update-kubeconfig --name $K8S_CLUSTER_NAME
-//
-//             # apply to your namespace
-//             kubectl apply -f mnist-predictor.yaml  --validate=false --namespace=$K8S_NAMESPACE
-//             '''
-//         }
-//     }
+    stage('MNIST Predictor - deploy'){
+        //when { branch "master" }
+        steps {
+            sh '''
+            cd infra/k8s
+            IMG_NAME="mnist-predictor-${BRANCH_NAME}-${BUILD_NUMBER}"
+            # replace registry url and image name placeholders in yaml
+             sed -i "s|{{REGISTRY_URL}}|$REGISTRY_URL|g" mnist-predictor.yaml
+             sed -i "s|{{K8S_NAMESPACE}}|$K8S_NAMESPACE|g" mnist-predictor.yaml
+             sed -i "s|{{IMG_NAME}}|$IMG_NAME|g" mnist-predictor.yaml
+
+            # get kubeconfig creds
+            aws eks --region $K8S_CLUSTER_REGION update-kubeconfig --name $K8S_CLUSTER_NAME
+
+            # apply to your namespace
+            kubectl apply -f mnist-predictor.yaml  --validate=false --namespace=$K8S_NAMESPACE
+            '''
+        }
+    }
   }
 }
 

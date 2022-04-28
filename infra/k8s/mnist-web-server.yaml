@@ -29,5 +29,5 @@ spec:
   selector:
     app: mnist-web-server
   ports:
-    - port: 7070
-      targetPort: 7070
+    - port: 8081
+      targetPort: 8081

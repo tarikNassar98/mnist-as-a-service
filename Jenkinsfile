@@ -20,8 +20,8 @@ pipeline {
             IMAGE="mnist-web-server"
             TAG="${IMAGE}-${BRANCH_NAME}-${BUILD_NUMBER}"
             aws ecr-public get-login-password --region ${ECR_REGION} | docker login --username AWS --password-stdin ${REGISTRY_URL}
-            docker build -t ${IMAGE} ./webserver
-            docker tag  ${IMAGE} ${REGISTRY_URL}:${TAG}
+            docker build -t ${IMAGE}:0.0.${BUILD_NUMBER} ./webserver
+            docker tag  ${IMAGE}:0.0.${BUILD_NUMBER} ${REGISTRY_URL}:${TAG}
             docker push ${REGISTRY_URL}:${TAG}
           '''
       }
@@ -60,8 +60,8 @@ pipeline {
             TAG="${IMAGE}-${BRANCH_NAME}-${BUILD_NUMBER}"
             cd ml_model
             aws ecr-public get-login-password --region ${ECR_REGION} | docker login --username AWS --password-stdin ${REGISTRY_URL}
-            docker build -t ${IMAGE}  .
-            docker tag  ${IMAGE} ${REGISTRY_URL}:${TAG}
+            docker build -t ${IMAGE}:0.0.${BUILD_NUMBER}  .
+            docker tag  ${IMAGE}:0.0.${BUILD_NUMBER} ${REGISTRY_URL}:${TAG}
             docker push ${REGISTRY_URL}:${TAG}
             '''
         }
@@ -72,8 +72,7 @@ pipeline {
         steps {
             sh '''
             cd infra/k8s
-            IMG_NAME=mnist-predictor
-            sed --version
+            IMG_NAME="mnist-predictor-${BRANCH_NAME}-${BUILD_NUMBER}"
             # replace registry url and image name placeholders in yaml
              sed -i "s|{{REGISTRY_URL}}|$REGISTRY_URL|g" mnist-predictor.yaml
              sed -i "s|{{K8S_NAMESPACE}}|$K8S_NAMESPACE|g" mnist-predictor.yaml

@@ -1,3 +1,6 @@
+
+//this file is under maintenance js sdk will be used ....
+
 const webcamElement = document.getElementById('webcam');
 
 const canvasElement = document.getElementById('canvas');

@@ -14,7 +14,7 @@ pipeline {
 
   stages {
     stage('MNIST Web Server - build'){
-//       when { branch "master" }
+      when { branch "master" }
       steps {
           sh '''
             IMAGE="mnist-web-server"
@@ -28,7 +28,7 @@ pipeline {
     }
 
     stage('MNIST Web Server - deploy'){
-        //when { branch "master" }
+        when { branch "master" }
         steps {
             sh '''
             echo deploying ....
@@ -53,7 +53,7 @@ pipeline {
 
 
     stage('MNIST Predictor - build'){
-//         when { branch "master" }
+         when { branch "master" }
         steps {
             sh '''
             IMAGE="mnist-predictor"
@@ -68,7 +68,7 @@ pipeline {
     }
 
     stage('MNIST Predictor - deploy'){
-        //when { branch "master" }
+        when { branch "master" }
         steps {
             sh '''
             cd infra/k8s

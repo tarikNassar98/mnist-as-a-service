@@ -72,18 +72,19 @@ function cameraStopped(){
 $("#take-photo").click(function () {
     beforeTakePhoto();
     let picture = webcam.snap();
+//    const blob=await (await fetch(picture)).blob();
 
-    console.log(picture)
     $.ajax({
         contentType: 'application/json',
         data: picture,
         success: function(data, response){
             $('#prediction').text('filter_' + data.prediction);
             afterTakePhoto();
+            saveIamge(data);
         },
         error: function(data){
             afterTakePhoto();
-            console.log(JSON.stringify(data))
+
         },
         type: 'POST',
         url: '/upload'
@@ -110,6 +111,9 @@ function afterTakePhoto(){
     $('#download-photo').removeClass('d-none');
     $('#resume-camera').removeClass('d-none');
     $('#cameraControls').removeClass('d-none');
+
+
+
 }
 
 function removeCapture(){
@@ -123,7 +127,9 @@ function removeCapture(){
 }
 
 function uploadFile(event) {
+
       const files = event.target.files
+      console.log(event.target.files);
       const formData = new FormData()
       formData.append('myFile', files[0])
 
@@ -147,7 +153,30 @@ $("#resume-camera").click(function () {
         });
 });
 
+
 $("#exit-app").click(function () {
     removeCapture();
     $("#webcam-switch").prop("checked", false).change();
 });
+
+function saveIamge(data){
+        console.log ('save start..');
+        console.log(data);
+      // Creating Our XMLHttpRequest object
+        var xhr = new XMLHttpRequest();
+
+//         Making our connection
+        var url = 'https://jsonplaceholder.typicode.com/todos/1';
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.open("POST", "", true);
+        xhr.send("fname=Henry&lname=Ford");
+
+
+   xhr.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                console.log(this.responseText);
+            }
+        }
+
+
+}

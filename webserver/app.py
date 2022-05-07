@@ -1,7 +1,9 @@
 import requests
 from flask import Flask, send_file, request, render_template
-
+import boto3
 app = Flask(__name__, static_url_path='')
+
+
 
 
 @app.route("/")
@@ -11,8 +13,15 @@ def home():
 
 @app.route("/upload", methods=['POST'])
 def hello_world():
+
     data = request.data
+
+    client = boto3.client('s3')
+
+    # with open('static/js/app.js', 'rb') as data:
+    #     client.upload_fileobj(data, 'tarik-fp-bucket','my-key')
     prediction = requests.get(f'http://mnist-predictor-service:8080/predict', data=data)
+
     return prediction.json()
 
 

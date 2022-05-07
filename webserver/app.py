@@ -1,6 +1,5 @@
 import requests
 from flask import Flask, send_file, request, render_template
-import boto3
 app = Flask(__name__, static_url_path='')
 
 

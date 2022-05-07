@@ -15,10 +15,8 @@ def hello_world():
 
     data = request.data
 
-    client = boto3.client('s3')
 
-    # with open('static/js/app.js', 'rb') as data:
-    #     client.upload_fileobj(data, 'tarik-fp-bucket','my-key')
+
     prediction = requests.get(f'http://mnist-predictor-service:8080/predict', data=data)
 
     return prediction.json()

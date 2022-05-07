@@ -31,7 +31,7 @@ pipeline {
         when { branch "master" }
         steps {
             sh '''
-            echo deploying ....
+            echo deploying ...
 
             cd infra/k8s
             IMG_NAME="mnist-web-server-${BRANCH_NAME}-${BUILD_NUMBER}"
@@ -45,7 +45,6 @@ pipeline {
             aws eks --region $K8S_CLUSTER_REGION update-kubeconfig --name $K8S_CLUSTER_NAME
 
             # apply to your namespace
-            echo ${K8S_NAMESPACE}
             kubectl apply -f mnist-web-server.yaml --validate=false -n=${K8S_NAMESPACE}
             '''
         }
@@ -59,7 +58,6 @@ pipeline {
             IMAGE="mnist-predictor"
             TAG="${IMAGE}-${BRANCH_NAME}-${BUILD_NUMBER}"
             cd ml_model
-            aws ecr-public get-login-password --region ${ECR_REGION} | docker login --username AWS --password-stdin ${REGISTRY_URL}
             docker build -t ${IMAGE}:0.0.${BUILD_NUMBER}  .
             docker tag  ${IMAGE}:0.0.${BUILD_NUMBER} ${REGISTRY_URL}:${TAG}
             docker push ${REGISTRY_URL}:${TAG}
@@ -78,8 +76,7 @@ pipeline {
              sed -i "s|{{K8S_NAMESPACE}}|$K8S_NAMESPACE|g" mnist-predictor.yaml
              sed -i "s|{{IMG_NAME}}|$IMG_NAME|g" mnist-predictor.yaml
 
-            # get kubeconfig creds
-            aws eks --region $K8S_CLUSTER_REGION update-kubeconfig --name $K8S_CLUSTER_NAME
+
 
             # apply to your namespace
             kubectl apply -f mnist-predictor.yaml  --validate=false --namespace=$K8S_NAMESPACE
